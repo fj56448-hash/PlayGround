@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#72d5ff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ed4b3b'/%3E%3Cpath fill='%23fff5d8' d='M7 17h18v8H7zM9 10h14v7H9zM11 7h10v4H11z'/%3E%3C/svg%3E">
+<title>Super Mario — Mushroom Meadow</title>
+<style>
+:root{color-scheme:dark;--ink:#17243a;--cream:#fff5d8;--red:#ed4b3b;--gold:#ffcf4a}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#16253c;font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;touch-action:none}body{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 32%,#40597a,#16253c 72%)}#game-shell{position:relative;width:min(100vw,1280px);aspect-ratio:16/9;max-height:100dvh;background:#73d8ff;border:5px solid #fff3d4;border-radius:20px;overflow:hidden;box-shadow:0 24px 80px #06142699,0 0 0 5px #ed4b3b,0 0 0 10px #17243a;user-select:none;-webkit-user-select:none}canvas{display:block;width:100%;height:100%;image-rendering:pixelated}#hud{position:absolute;inset:0 0 auto;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;padding:clamp(10px,2vw,24px);pointer-events:none;color:white;text-shadow:2px 3px 0 #773928,0 2px 7px #573929;font-size:clamp(12px,1.8vw,20px);font-weight:1000;letter-spacing:.08em;text-transform:uppercase}.hud-group{display:flex;gap:clamp(12px,2.4vw,30px);align-items:flex-start}.hud-item{text-align:center;min-width:50px}.hud-label{font-size:.62em;opacity:.86;display:block;margin-bottom:3px}.hud-value{font-variant-numeric:tabular-nums}.coin-icon{color:#ffe56c}.hearts{color:#ff7373;letter-spacing:0}.overlay{position:absolute;inset:0;z-index:4;display:grid;place-items:center;padding:20px;background:#10223b88;backdrop-filter:blur(4px);transition:opacity .2s,visibility .2s}.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}.card{width:min(440px,92%);padding:clamp(22px,4vw,38px);text-align:center;background:linear-gradient(180deg,#fff8e4,#ffe9bd);border:4px solid white;border-radius:22px;color:#24324a;box-shadow:0 10px 0 #d9a95c,0 20px 50px #12274688}.eyebrow{font-size:11px;font-weight:1000;letter-spacing:.2em;color:#e35a43;text-transform:uppercase}.card h1{margin:7px 0 4px;font-size:clamp(28px,5vw,46px);line-height:.98;color:#e94738;text-shadow:2px 3px 0 #ffd56b;letter-spacing:-.05em}.card h2{margin:8px 0;font-size:30px;color:#e94738}.card p{margin:12px auto 18px;max-width:330px;font-size:14px;line-height:1.55;color:#526078}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.primary,.secondary{appearance:none;border:0;border-radius:999px;padding:13px 22px;font:900 14px system-ui,sans-serif;cursor:pointer;touch-action:manipulation}.primary{background:#ed4b3b;color:white;box-shadow:0 5px 0 #ac2d2b,0 8px 14px #b33a3a44}.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #ac2d2b}.secondary{background:#ffe5a7;color:#614720}.help{font-size:11px!important;margin-bottom:0!important}.mobile-controls{display:none;position:absolute;z-index:3;inset:auto 0 0;padding:12px 15px max(14px,env(safe-area-inset-bottom));justify-content:space-between;align-items:end;pointer-events:none}.control-cluster{display:flex;gap:10px;pointer-events:auto}.ctrl{height:56px;min-width:58px;padding:0 17px;border:2px solid #ffffff9e;border-radius:18px;background:#2336509c;color:white;font-size:24px;font-weight:900;box-shadow:0 4px 0 #14243c88;touch-action:none;user-select:none}.ctrl.jump{height:68px;min-width:72px;border-radius:24px;background:#e64b3cbf;font-size:15px;letter-spacing:.06em}.ctrl:active,.ctrl.held{transform:translateY(3px);background:#fff5d8;color:#e64b3c}.sound-btn{position:absolute;right:13px;top:70px;z-index:3;width:36px;height:36px;border:1px solid #ffffff88;border-radius:50%;background:#21344d66;color:white;font-size:16px;cursor:pointer}.toast{position:absolute;z-index:3;top:23%;left:50%;transform:translate(-50%,-10px);background:#fff2cf;color:#614720;padding:8px 15px;border-radius:99px;font-weight:900;font-size:13px;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;box-shadow:0 3px 0 #d9a95c}.toast.show{opacity:1;transform:translate(-50%,0)}@media(max-width:700px),(pointer:coarse){#game-shell{width:100vw;height:100dvh;max-height:none;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}#hud{padding:12px 12px}.mobile-controls{display:flex}.sound-btn{top:64px;right:12px}.card{padding:22px 18px}.help{font-size:10px!important}}@media(max-height:500px) and (orientation:landscape){.mobile-controls{padding:4px 12px 5px}.ctrl{height:44px;min-width:50px}.ctrl.jump{height:52px}.card{padding:15px}.card p{margin:6px auto 10px}.help{display:none}}
+@media(max-aspect-ratio:1/1) and (pointer:coarse){#game-shell canvas{position:absolute;left:0;top:50%;width:100%;height:auto;aspect-ratio:16/9;transform:translateY(-50%)}#hud{top:calc(50% - 28.125vw);padding:8px 10px}.sound-btn{top:calc(50% - 22vw);right:10px}.mobile-controls{padding-bottom:max(18px,env(safe-area-inset-bottom))}}
+</style>
+</head>
+<body>
+<main id="game-shell" aria-label="Super Mario platform game">
+<canvas id="game" width="480" height="270" aria-label="Mushroom Meadow game"></canvas>
+<div id="hud"><div class="hud-group"><div class="hud-item"><span class="hud-label">Mario</span><span class="hud-value" id="score">000000</span></div><div class="hud-item"><span class="hud-label">Coins</span><span class="hud-value coin-icon">● <span id="coins">00</span></span></div></div><div class="hud-group"><div class="hud-item"><span class="hud-label">World</span><span class="hud-value">1-1</span></div><div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">400</span></div><div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value hearts" id="lives">♥♥♥</span></div></div></div>
+<button class="sound-btn" id="sound" aria-label="Toggle sound">♫</button><div class="toast" id="toast">1UP!</div>
+<div class="overlay" id="overlay"><section class="card"><div class="eyebrow">A tiny retro adventure</div><h1>SUPER<br>MARIO</h1><p>Run, jump, collect coins, and make it to the flag! Watch out for the little brown guys.</p><div class="actions"><button class="primary" id="start">LET'S-A GO!</button></div><p class="help">MOVE: ← → or A / D &nbsp; · &nbsp; JUMP: SPACE / ↑ / W<br>On mobile, use the on-screen buttons.</p></section></div>
+<div class="overlay hidden" id="end-overlay"><section class="card"><div class="eyebrow" id="end-eyebrow">Adventure complete</div><h2 id="end-title">YOU WIN!</h2><p id="end-copy">The Mushroom Kingdom is cheering for you!</p><div class="actions"><button class="primary" id="again">PLAY AGAIN</button></div></section></div>
+<div class="mobile-controls"><div class="control-cluster"><button class="ctrl" data-key="left" aria-label="Move left">◀</button><button class="ctrl" data-key="right" aria-label="Move right">▶</button></div><div class="control-cluster"><button class="ctrl jump" data-key="jump" aria-label="Jump">JUMP</button></div></div>
+</main>
+<script>
+'use strict';
+(() => {
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const W=480,H=270, WORLD=3040, FLOOR=230, GRAVITY=.42;
+const ui={overlay:document.getElementById('overlay'),end:document.getElementById('end-overlay'),score:document.getElementById('score'),coins:document.getElementById('coins'),time:document.getElementById('time'),lives:document.getElementById('lives'),toast:document.getElementById('toast')};
+let keys={left:false,right:false,jump:false},running=false,paused=false,won=false,muted=false,audio=null,last=0,elapsed=0,camera=0,score=0,coins=0,lives=3,timer=400,toastTimer=0,particles=[],entities=[],solids=[],coinItems=[],questionBlocks=[],bricks=[],pipes=[],clouds=[];
+const player={x:34,y:190,w:13,h:21,vx:0,vy:0,onGround:false,face:1,invuln:0,anim:0,big:false};
+function platform(x,y,w,h,type='ground'){solids.push({x,y,w,h,type})}
+function block(x,y,kind='brick'){const b={x,y,w:16,h:16,kind,used:false,bump:0};solids.push(b);(kind==='question'?questionBlocks:bricks).push(b)}
+function pipe(x,y,h){pipes.push({x,y,w:32,h});platform(x,y,32,h,'pipe')}
+function makeLevel(){
+ solids=[];questionBlocks=[];bricks=[];pipes=[];coinItems=[];entities=[];particles=[];
+ for(let x=0;x<WORLD;x+=16){let open=(x>=288&&x<336)||(x>=944&&x<992)||(x>=1664&&x<1712)||(x>=2368&&x<2416);if(!open)platform(x,FLOOR,16,H-FLOOR,'ground')}
+ // ledges & block formations
+ [[176,174,'question'],[192,174,'brick'],[208,174,'question'],[352,142,'brick'],[368,142,'question'],[384,142,'brick'],[400,142,'brick'],[624,174,'brick'],[640,174,'question'],[656,174,'brick'],[832,142,'question'],[848,142,'brick'],[864,142,'question'],[1120,174,'question'],[1136,174,'brick'],[1152,174,'question'],[1296,142,'brick'],[1312,142,'question'],[1328,142,'brick'],[1504,174,'brick'],[1520,174,'question'],[1536,174,'brick'],[1888,142,'question'],[1904,142,'brick'],[1920,142,'question'],[2144,174,'brick'],[2160,174,'question'],[2176,174,'brick'],[2560,142,'brick'],[2576,142,'question'],[2592,142,'brick']].forEach(a=>block(...a));
+ // Small stair sets
+ for(let n=0;n<3;n++)for(let row=0;row<=n;row++)block(472+n*16,FLOOR-16*(row+1),'brick');
+ for(let n=0;n<4;n++)for(let row=0;row<=n;row++)block(2752+n*16,FLOOR-16*(row+1),'brick');
+ pipe(256,198,32);pipe(448,182,48);pipe(752,190,40);pipe(1040,174,56);pipe(1408,190,40);pipe(1792,174,56);pipe(2288,190,40);pipe(2464,182,48);
+ // coins in arcs and secret trails
+ [[92,184],[108,160],[124,184],[220,145],[236,145],[320,150],[336,150],[432,116],[448,116],[548,182],[564,166],[580,182],[688,145],[704,145],[800,180],[816,164],[880,110],[896,110],[1008,178],[1024,158],[1170,145],[1186,145],[1248,182],[1264,166],[1350,112],[1366,112],[1456,182],[1472,160],[1570,150],[1586,150],[1730,182],[1746,164],[1840,110],[1856,110],[1984,182],[2000,162],[2080,146],[2096,146],[2210,184],[2226,164],[2320,150],[2336,150],[2432,138],[2448,138],[2640,180],[2656,160],[2704,180]].forEach(([x,y])=>coinItems.push({x,y,r:5,taken:false,phase:Math.random()*6}));
+ for(let x of [140,330,530,600,780,915,1080,1200,1370,1600,1760,2000,2240,2500,2680])entities.push({type:'goomba',x,y:FLOOR-14,w:14,h:14,vx:-.42,alive:true,dead:0,walk:0});
+ for(let x of [720,1220,2050,2620])entities.push({type:'koopa',x,y:FLOOR-18,w:14,h:18,vx:-.34,alive:true,dead:0,walk:0,shell:false});
+ clouds=[];for(let i=0;i<22;i++)clouds.push({x:(i*173+42)%WORLD,y:28+(i*31)%72,s:0.7+(i%3)*.25});
+ player.x=34;player.y=FLOOR-player.h;player.vx=player.vy=0;player.big=false;player.invuln=0;camera=0;score=0;coins=0;lives=3;timer=400;elapsed=0;won=false;updateHud();
+}
+function updateHud(){ui.score.textContent=String(score).padStart(6,'0');ui.coins.textContent=String(coins%100).padStart(2,'0');ui.lives.textContent='♥'.repeat(Math.max(0,lives))||'—';ui.time.textContent=Math.max(0,Math.ceil(timer));}
+function sound(freq=440,dur=.07,type='square',vol=.035){if(muted)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
+function announce(text){ui.toast.textContent=text;ui.toast.classList.add('show');toastTimer=1.2}
+function burst(x,y,color,n=7){for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*3,vy:-Math.random()*3-1,life:.45,color,size:2+Math.random()*2})}
+function jump(){if(!running||paused||!player.onGround)return;player.vy=-8.2;player.onGround=false;sound(530,.09,'square',.025)}
+function rectHit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
+function collideX(obj,dx){obj.x+=dx;for(const s of solids){if(!rectHit(obj,s))continue;if(dx>0)obj.x=s.x-obj.w;else if(dx<0)obj.x=s.x+s.w;obj.vx=0}}
+function collideY(obj,dy){obj.y+=dy;obj.onGround=false;for(const s of solids){if(!rectHit(obj,s))continue;if(dy>0){obj.y=s.y-obj.h;obj.vy=0;obj.onGround=true}else if(dy<0){obj.y=s.y+s.h;obj.vy=0;if(s.kind==='question'||s.kind==='brick')hitBlock(s)}}}
+function hitBlock(b){if(b.bump>0)return;b.bump=.18;if(b.kind==='question'&&!b.used){b.used=true;coins++;score+=200;updateHud();sound(900,.1,'sine');burst(b.x+8,b.y-5,'#ffdb59',8);announce('+200  ●')}else{sound(170,.08,'square');burst(b.x+8,b.y,'#be7045',5)}}
+function takeDamage(){if(player.invuln>0)return;lives--;updateHud();player.invuln=1.5;player.vy=-5;player.vx=-player.face*2.5;if(player.big){player.big=false;player.h=21;player.y+=8;announce('Ouch!')}else{sound(120,.25,'sawtooth',.05);if(lives<=0)setTimeout(()=>finish(false),400)}}
+function stomp(e){if(e.type==='koopa'&&!e.shell){e.shell=true;e.w=15;e.h=10;e.y+=8;e.vx=0;score+=200;announce('SHELL!')}else if(e.type==='koopa'&&e.shell){e.vx=player.x<e.x?-3.2:3.2;score+=100}else{e.alive=false;e.dead=.28;score+=100}player.vy=-5.4;updateHud();sound(240,.08,'square');burst(e.x+7,e.y,'#a85b32',5)}
+function update(dt){if(!running||paused||won)return;elapsed+=dt;timer-=dt;if(timer<=0){timer=0;updateHud();finish(false);return}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)ui.toast.classList.remove('show')}
+ const target=(keys.right?1:0)-(keys.left?1:0);if(target){player.vx+=target*.42;player.face=target}else player.vx*=player.onGround?.76:.94;player.vx=Math.max(-2.2,Math.min(2.2,player.vx));collideX(player,player.vx);
+ if(keys.jump&&player.onGround)jump();player.vy=Math.min(8,player.vy+GRAVITY);collideY(player,player.vy);player.anim+=Math.abs(player.vx)*.15;if(player.invuln>0)player.invuln-=dt;
+ for(const c of coinItems){if(c.taken)continue;c.phase+=dt*6;const cy=c.y+Math.sin(c.phase)*2;if(Math.abs(player.x+player.w/2-c.x)<12&&Math.abs(player.y+player.h/2-cy)<16){c.taken=true;coins++;score+=200;updateHud();sound(1040,.08,'sine');burst(c.x,cy,'#ffe268',6)}}
+ for(const e of entities){if(!e.alive){e.dead-=dt;continue}e.walk+=dt*8;if(e.shell&&Math.abs(e.vx)<.1)continue;if(e.x<0||e.x>WORLD-e.w)e.vx*=-1;const old=e.x;e.x+=e.vx;for(const s of solids){if(rectHit(e,s)){e.x=old;e.vx*=-1;break}}if(!e.shell){const under=solids.some(s=>e.x+e.w>s.x&&e.x<s.x+s.w&&Math.abs(e.y+e.h-s.y)<2);if(!under)e.vx*=-1}
+ if(rectHit(player,e)){if(player.vy>1&&player.y+player.h-e.y<11)stomp(e);else if(e.shell&&Math.abs(e.vx)<.1){e.vx=player.x<e.x?3:-3;score+=100;updateHud()}else takeDamage()}}
+ entities=entities.filter(e=>e.alive||e.dead>0);
+ for(const b of [...questionBlocks,...bricks])if(b.bump>0)b.bump=Math.max(0,b.bump-dt);
+ for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=dt}particles=particles.filter(p=>p.life>0);
+ if(player.y>H+40){player.x=camera+40;player.y=40;takeDamage()}
+ camera=Math.max(0,Math.min(WORLD-W,player.x-155));
+ if(player.x>WORLD-95){won=true;score+=Math.ceil(timer)*10;updateHud();setTimeout(()=>finish(true),500)}
+ updateHud();
+}
+function cloud(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.fillStyle='#fff9e8';ctx.fillRect(0,6,36,9);ctx.fillRect(6,0,13,13);ctx.fillRect(17,2,13,13);ctx.fillRect(27,7,10,7);ctx.fillStyle='#d9f5ff';ctx.fillRect(5,13,26,2);ctx.restore()}
+function drawBackground(){let sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#68caff');sky.addColorStop(.68,'#b7eeff');sky.addColorStop(1,'#e5faff');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+ // sunshine and distant soft hills
+ ctx.fillStyle='#fff0a8';ctx.beginPath();ctx.arc(408,62,20,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff8c7';ctx.beginPath();ctx.arc(408,62,14,0,Math.PI*2);ctx.fill();
+ for(let i=0;i<8;i++){let x=((i*115-camera*.16)%650+650)%650-80;let y=186+(i%3)*9;ctx.fillStyle=i%2?'#a2e3b0':'#b0e8a9';ctx.beginPath();ctx.ellipse(x,y,62,32,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle='#7ed597';ctx.beginPath();ctx.ellipse(x+17,y+5,38,25,0,Math.PI,Math.PI*2);ctx.fill()}
+ for(const c of clouds){let x=(c.x-camera*.3)%WORLD;if(x< -50)x+=WORLD;cloud(x,c.y,c.s)}
+ // decorative tiny flowers on the horizon
+ for(let i=0;i<35;i++){let x=((i*91-camera*.55)%WORLD+WORLD)%WORLD;ctx.fillStyle=i%2?'#fff':'#ffe77a';ctx.fillRect(x,220,3,3)}
+}
+function drawTerrain(){for(const s of solids){if(s.x+s.w<camera-20||s.x>camera+W+20)continue;let x=Math.round(s.x-camera),y=s.y;if(s.type==='ground'){
+ ctx.fillStyle='#9b542e';ctx.fillRect(x,y,s.w,s.h);ctx.fillStyle='#45bd58';ctx.fillRect(x,y,s.w,5);ctx.fillStyle='#82df62';ctx.fillRect(x,y,s.w,2);ctx.fillStyle='#753e2c';ctx.fillRect(x,y+8,s.w,s.h-8);
+ if((s.x/16|0)%2===0){ctx.fillStyle='#b97843';ctx.fillRect(x+3,y+11,4,3);ctx.fillRect(x+10,y+23,4,2)}else{ctx.fillStyle='#b97843';ctx.fillRect(x+8,y+14,4,3);ctx.fillRect(x+2,y+26,5,2)}
+ }else if(s.type==='pipe'){
+ // handled by foreground pipe list
+ }else{const b=s;let by=y-(b.bump>0?Math.sin((b.bump/.18)*Math.PI)*4:0);ctx.fillStyle=b.kind==='question'?(b.used?'#b97a45':'#efa932'):'#b9683d';ctx.fillRect(x,by,16,16);ctx.fillStyle=b.kind==='question'&&!b.used?'#ffd45d':'#e79a54';ctx.fillRect(x+1,by+1,14,13);ctx.fillStyle='#ffd46b';if(b.kind==='question'&&!b.used){ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.fillText('?',x+8,by+12);ctx.fillRect(x+12,by+3,2,2)}else{ctx.fillStyle='#8c4937';ctx.fillRect(x+2,by+3,3,3);ctx.fillRect(x+11,by+3,3,3);ctx.fillRect(x+2,by+10,3,3);ctx.fillRect(x+11,by+10,3,3)}}}
+ for(const p of pipes){let x=Math.round(p.x-camera),y=p.y;if(x<-40||x>W+40)continue;ctx.fillStyle='#147a47';ctx.fillRect(x,y+8,32,p.h-8);ctx.fillStyle='#16a64f';ctx.fillRect(x+4,y+11,5,p.h-11);ctx.fillStyle='#08703e';ctx.fillRect(x+26,y+10,4,p.h-10);ctx.fillStyle='#128442';ctx.fillRect(x-3,y,38,11);ctx.fillStyle='#38c95c';ctx.fillRect(x-3,y,38,4);ctx.fillStyle='#075a39';ctx.fillRect(x+30,y+4,5,6)}
+}
+function drawCoins(){for(const c of coinItems){if(c.taken||c.x<camera-10||c.x>camera+W+10)continue;let cy=c.y+Math.sin(c.phase)*2,x=c.x-camera;ctx.fillStyle='#d99526';ctx.fillRect(x-3,cy-6,7,12);ctx.fillStyle='#ffe66c';ctx.fillRect(x-2,cy-5,5,10);ctx.fillStyle='#fff5a2';ctx.fillRect(x-1,cy-4,2,3)}}
+function drawEnemy(e){let x=Math.round(e.x-camera),y=Math.round(e.y);ctx.save();if(!e.alive){ctx.fillStyle='#864129';ctx.fillRect(x,y+9,e.w,5);ctx.restore();return}if(e.type==='goomba'){
+ ctx.fillStyle='#7a3d28';ctx.fillRect(x+2,y+3,10,9);ctx.fillRect(x+4,y,6,4);ctx.fillStyle='#a95d36';ctx.fillRect(x+3,y+3,8,6);ctx.fillStyle='#fff4d8';ctx.fillRect(x+3,y+5,3,4);ctx.fillRect(x+8,y+5,3,4);ctx.fillStyle='#30243a';ctx.fillRect(x+4,y+6,2,3);ctx.fillRect(x+9,y+6,2,3);ctx.fillStyle='#643622';let step=Math.sin(e.walk)*2;ctx.fillRect(x+2,y+12,4,2+step);ctx.fillRect(x+9,y+12,4,2-step);
+ }else{ctx.fillStyle=e.shell?'#247744':'#32a956';ctx.fillRect(x+2,y+5,11,e.shell?6:11);ctx.fillStyle='#ffdc73';ctx.fillRect(x+1,y+1,8,7);ctx.fillStyle='#fff';ctx.fillRect(x+6,y+3,3,3);ctx.fillStyle='#25334a';ctx.fillRect(x+7,y+4,1,2);ctx.fillStyle='#e6c876';ctx.fillRect(x+3,y+14,4,3);ctx.fillRect(x+9,y+14,4,3);ctx.fillStyle='#17713f';ctx.fillRect(x+4,y+7,7,2)}ctx.restore()}
+function drawMario(){if(player.invuln>0&&Math.floor(elapsed*15)%2===0)return;let x=Math.round(player.x-camera),y=Math.round(player.y),step=Math.sin(player.anim)*2;ctx.save();if(player.face<0){ctx.translate(x+player.w,0);ctx.scale(-1,1);x=0}else x=x;
+ // boots
+ ctx.fillStyle='#74351f';ctx.fillRect(x+1,y+18+step,5,3);ctx.fillRect(x+8,y+18-step,5,3);
+ // overalls
+ ctx.fillStyle='#1469bb';ctx.fillRect(x+2,y+11,10,8);ctx.fillRect(x+1,y+13,12,4);ctx.fillStyle='#ffd45c';ctx.fillRect(x+4,y+12,2,2);ctx.fillRect(x+9,y+12,2,2);
+ // shirt and face
+ ctx.fillStyle='#e44635';ctx.fillRect(x+1,y+7,12,6);ctx.fillRect(x,y+9,3,5);ctx.fillRect(x+11,y+9,3,4);ctx.fillStyle='#ffc38a';ctx.fillRect(x+3,y+3,9,7);ctx.fillRect(x+1,y+6,3,4);ctx.fillStyle='#382a3b';ctx.fillRect(x+9,y+5,2,3);ctx.fillRect(x+5,y+9,5,2);ctx.fillStyle='#56352e';ctx.fillRect(x+4,y+8,7,2);
+ // cap
+ ctx.fillStyle='#c8302d';ctx.fillRect(x+1,y+1,10,4);ctx.fillRect(x+3,y-1,8,3);ctx.fillRect(x+9,y+3,5,2);ctx.fillStyle='#ff6550';ctx.fillRect(x+3,y,5,1);
+ ctx.restore()}
+function drawFlag(){let x=WORLD-76-camera;if(x<-25||x>W+20)return;ctx.fillStyle='#f8f2d8';ctx.fillRect(x,78,3,FLOOR-78);ctx.fillStyle='#ffda52';ctx.fillRect(x-2,74,7,5);ctx.fillStyle='#e54a3c';ctx.beginPath();ctx.moveTo(x+3,82);ctx.lineTo(x+30,91);ctx.lineTo(x+3,101);ctx.fill();ctx.fillStyle='#2daa58';ctx.fillRect(x-10,FLOOR-8,24,8);ctx.fillStyle='#47c85d';ctx.fillRect(x-10,FLOOR-8,24,3)}
+function draw(){ctx.clearRect(0,0,W,H);drawBackground();drawTerrain();drawCoins();drawFlag();for(const e of entities)drawEnemy(e);drawMario();for(const p of particles){ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle=p.color;ctx.fillRect(p.x-camera,p.y,p.size,p.size)}ctx.globalAlpha=1;
+ // subtle cinematic vignette
+ let v=ctx.createLinearGradient(0,0,0,H);v.addColorStop(0,'#16375e12');v.addColorStop(.8,'#16375e00');v.addColorStop(1,'#16375e14');ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
+function finish(victory){running=false;won=victory;ui.end.classList.remove('hidden');document.getElementById('end-eyebrow').textContent=victory?'World 1-1 complete':'Try again, hero';document.getElementById('end-title').textContent=victory?'YOU WIN!':'GAME OVER';document.getElementById('end-copy').textContent=victory?`You found ${coins} coins and scored ${String(score).padStart(6,'0')} points. The kingdom is cheering!`:'The Mushroom Kingdom still needs you. Ready for another run?';sound(victory?740:130,victory?.5:.4,victory?'sine':'sawtooth',.045)}
+function begin(){makeLevel();running=true;paused=false;ui.overlay.classList.add('hidden');ui.end.classList.add('hidden');last=performance.now();sound(660,.1,'square')}
+function frame(now){const dt=Math.min(.032,(now-last)/1000||0);last=now;update(dt);draw();requestAnimationFrame(frame)}
+document.getElementById('start').addEventListener('click',begin);document.getElementById('again').addEventListener('click',begin);document.getElementById('sound').addEventListener('click',e=>{muted=!muted;e.currentTarget.textContent=muted?'♪̸':'♫'});
+const map={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',KeyW:'jump'};
+window.addEventListener('keydown',e=>{if(map[e.code]){e.preventDefault();let k=map[e.code];if(k==='jump'&&!keys.jump)jump();keys[k]=true}if(e.code==='Escape'&&running){paused=!paused;announce(paused?'PAUSED':'LET’S GO!')}});
+window.addEventListener('keyup',e=>{if(map[e.code]){e.preventDefault();keys[map[e.code]]=false}});window.addEventListener('blur',()=>{keys={left:false,right:false,jump:false}});
+document.querySelectorAll('.ctrl').forEach(button=>{const k=button.dataset.key;const on=e=>{e.preventDefault();button.classList.add('held');if(k==='jump'&&!keys.jump)jump();keys[k]=true};const off=e=>{e.preventDefault();button.classList.remove('held');keys[k]=false};button.addEventListener('pointerdown',on);button.addEventListener('pointerup',off);button.addEventListener('pointercancel',off);button.addEventListener('pointerleave',off)});
+makeLevel();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
