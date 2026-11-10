@@ -14,7 +14,7 @@
 <body>
 <main id="game-shell" aria-label="Super Mario platform game">
 <canvas id="game" width="480" height="270" aria-label="Mushroom Meadow game"></canvas>
-<div id="hud"><div class="hud-group"><div class="hud-item"><span class="hud-label">Mario</span><span class="hud-value" id="score">000000</span></div><div class="hud-item"><span class="hud-label">Coins</span><span class="hud-value coin-icon">● <span id="coins">00</span></span></div></div><div class="hud-group"><div class="hud-item"><span class="hud-label">World</span><span class="hud-value">1-1</span></div><div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">400</span></div><div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value hearts" id="lives">♥♥♥</span></div></div></div>
+<div id="hud"><div class="hud-group"><div class="hud-item"><span class="hud-label">Mario</span><span class="hud-value" id="score">000000</span></div><div class="hud-item"><span class="hud-label">Coins</span><span class="hud-value coin-icon">● <span id="coins">00</span></span></div></div><div class="hud-group"><div class="hud-item"><span class="hud-label">World</span><span class="hud-value">1-1</span></div><div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">400</span></div><div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value hearts" id="lives">♥</span></div></div></div>
 <button class="sound-btn" id="sound" aria-label="Toggle sound">♫</button><div class="toast" id="toast">1UP!</div>
 <div class="overlay" id="overlay"><section class="card"><div class="eyebrow">A tiny retro adventure</div><h1>SUPER<br>MARIO</h1><p>Run, jump, collect coins, and make it to the flag! Watch out for the little brown guys.</p><div class="actions"><button class="primary" id="start">LET'S-A GO!</button></div><p class="help">MOVE: ← → or A / D &nbsp; · &nbsp; JUMP: SPACE / ↑ / W<br>On mobile, use the on-screen buttons.</p></section></div>
 <div class="overlay hidden" id="end-overlay"><section class="card"><div class="eyebrow" id="end-eyebrow">Adventure complete</div><h2 id="end-title">YOU WIN!</h2><p id="end-copy">The Mushroom Kingdom is cheering for you!</p><div class="actions"><button class="primary" id="again">PLAY AGAIN</button></div></section></div>
@@ -28,7 +28,7 @@ const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
 ctx.imageSmoothingEnabled=false;
 const W=480,H=270, WORLD=3040, FLOOR=230, GRAVITY=.42;
 const ui={overlay:document.getElementById('overlay'),end:document.getElementById('end-overlay'),score:document.getElementById('score'),coins:document.getElementById('coins'),time:document.getElementById('time'),lives:document.getElementById('lives'),toast:document.getElementById('toast')};
-let keys={left:false,right:false,jump:false},running=false,paused=false,won=false,muted=false,audio=null,last=0,elapsed=0,camera=0,score=0,coins=0,lives=3,timer=400,toastTimer=0,particles=[],entities=[],solids=[],coinItems=[],questionBlocks=[],bricks=[],pipes=[],clouds=[];
+let keys={left:false,right:false,jump:false},running=false,paused=false,won=false,muted=false,audio=null,last=0,elapsed=0,camera=0,score=0,coins=0,lives=1,timer=400,toastTimer=0,particles=[],entities=[],solids=[],coinItems=[],questionBlocks=[],bricks=[],pipes=[],clouds=[];
 const player={x:34,y:190,w:13,h:21,vx:0,vy:0,onGround:false,coyote:0,jumpBuffer:0,face:1,invuln:0,anim:0,big:false};
 function platform(x,y,w,h,type='ground'){solids.push({x,y,w,h,type})}
 function block(x,y,kind='brick'){const b={x,y,w:16,h:16,kind,used:false,bump:0};solids.push(b);(kind==='question'?questionBlocks:bricks).push(b)}
@@ -47,7 +47,7 @@ function makeLevel(){
  for(let x of [140,330,530,600,780,915,1080,1200,1370,1600,1760,2000,2240,2500,2680])entities.push({type:'goomba',x,y:FLOOR-14,w:14,h:14,vx:-.28,alive:true,dead:0,walk:0});
  for(let x of [720,1220,2050,2620])entities.push({type:'koopa',x,y:FLOOR-18,w:14,h:18,vx:-.23,alive:true,dead:0,walk:0,shell:false});
  clouds=[];for(let i=0;i<22;i++)clouds.push({x:(i*173+42)%WORLD,y:28+(i*31)%72,s:0.7+(i%3)*.25});
- player.x=34;player.y=FLOOR-player.h;player.vx=player.vy=0;player.onGround=false;player.coyote=0;player.jumpBuffer=0;player.big=false;player.invuln=0;camera=0;score=0;coins=0;lives=3;timer=400;elapsed=0;won=false;updateHud();
+ player.x=34;player.y=FLOOR-player.h;player.vx=player.vy=0;player.onGround=false;player.coyote=0;player.jumpBuffer=0;player.big=false;player.invuln=0;camera=0;score=0;coins=0;lives=1;timer=400;elapsed=0;won=false;updateHud();
 }
 function updateHud(){ui.score.textContent=String(score).padStart(6,'0');ui.coins.textContent=String(coins%100).padStart(2,'0');ui.lives.textContent='♥'.repeat(Math.max(0,lives))||'—';ui.time.textContent=Math.max(0,Math.ceil(timer));}
 function sound(freq=440,dur=.07,type='square',vol=.035){if(muted)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
