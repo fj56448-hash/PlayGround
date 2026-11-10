@@ -13,7 +13,7 @@
 </head>
 <body>
 <main id="game-shell" aria-label="Super Mario platform game">
-<canvas id="game" width="480" height="270" aria-label="Mushroom Meadow game"></canvas>
+<canvas id="game" width="240" height="135" aria-label="Mushroom Meadow game"></canvas>
 <div id="hud"><div class="hud-group"><div class="hud-item"><span class="hud-label">Mario</span><span class="hud-value" id="score">000000</span></div><div class="hud-item"><span class="hud-label">Coins</span><span class="hud-value coin-icon">● <span id="coins">00</span></span></div></div><div class="hud-group"><div class="hud-item"><span class="hud-label">World</span><span class="hud-value">1-1</span></div><div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">400</span></div><div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value hearts" id="lives">♥♥♥</span></div></div></div>
 <button class="sound-btn" id="sound" aria-label="Toggle sound">♫</button><div class="toast" id="toast">1UP!</div>
 <div class="overlay" id="overlay"><section class="card"><div class="eyebrow">A tiny retro adventure</div><h1>SUPER<br>MARIO</h1><p>Run, jump, collect coins, and make it to the flag! Watch out for the little brown guys.</p><div class="actions"><button class="primary" id="start">LET'S-A GO!</button></div><p class="help">MOVE: ← → or A / D &nbsp; · &nbsp; JUMP: SPACE / ↑ / W<br>On mobile, use the on-screen buttons.</p></section></div>
@@ -24,6 +24,8 @@
 'use strict';
 (() => {
 const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+// Render at half resolution and upscale with nearest-neighbor for a chunkier 8-bit look.
+ctx.scale(.5,.5);ctx.imageSmoothingEnabled=false;
 const W=480,H=270, WORLD=3040, FLOOR=230, GRAVITY=.42;
 const ui={overlay:document.getElementById('overlay'),end:document.getElementById('end-overlay'),score:document.getElementById('score'),coins:document.getElementById('coins'),time:document.getElementById('time'),lives:document.getElementById('lives'),toast:document.getElementById('toast')};
 let keys={left:false,right:false,jump:false},running=false,paused=false,won=false,muted=false,audio=null,last=0,elapsed=0,camera=0,score=0,coins=0,lives=3,timer=400,toastTimer=0,particles=[],entities=[],solids=[],coinItems=[],questionBlocks=[],bricks=[],pipes=[],clouds=[];
@@ -42,8 +44,8 @@ function makeLevel(){
  pipe(256,198,32);pipe(448,182,48);pipe(752,190,40);pipe(1040,174,56);pipe(1408,190,40);pipe(1792,174,56);pipe(2288,190,40);pipe(2464,182,48);
  // coins in arcs and secret trails
  [[92,184],[108,160],[124,184],[220,145],[236,145],[320,150],[336,150],[432,116],[448,116],[548,182],[564,166],[580,182],[688,145],[704,145],[800,180],[816,164],[880,110],[896,110],[1008,178],[1024,158],[1170,145],[1186,145],[1248,182],[1264,166],[1350,112],[1366,112],[1456,182],[1472,160],[1570,150],[1586,150],[1730,182],[1746,164],[1840,110],[1856,110],[1984,182],[2000,162],[2080,146],[2096,146],[2210,184],[2226,164],[2320,150],[2336,150],[2432,138],[2448,138],[2640,180],[2656,160],[2704,180]].forEach(([x,y])=>coinItems.push({x,y,r:5,taken:false,phase:Math.random()*6}));
- for(let x of [140,330,530,600,780,915,1080,1200,1370,1600,1760,2000,2240,2500,2680])entities.push({type:'goomba',x,y:FLOOR-14,w:14,h:14,vx:-.42,alive:true,dead:0,walk:0});
- for(let x of [720,1220,2050,2620])entities.push({type:'koopa',x,y:FLOOR-18,w:14,h:18,vx:-.34,alive:true,dead:0,walk:0,shell:false});
+ for(let x of [140,330,530,600,780,915,1080,1200,1370,1600,1760,2000,2240,2500,2680])entities.push({type:'goomba',x,y:FLOOR-14,w:14,h:14,vx:-.28,alive:true,dead:0,walk:0});
+ for(let x of [720,1220,2050,2620])entities.push({type:'koopa',x,y:FLOOR-18,w:14,h:18,vx:-.23,alive:true,dead:0,walk:0,shell:false});
  clouds=[];for(let i=0;i<22;i++)clouds.push({x:(i*173+42)%WORLD,y:28+(i*31)%72,s:0.7+(i%3)*.25});
  player.x=34;player.y=FLOOR-player.h;player.vx=player.vy=0;player.big=false;player.invuln=0;camera=0;score=0;coins=0;lives=3;timer=400;elapsed=0;won=false;updateHud();
 }
@@ -57,16 +59,16 @@ function collideX(obj,dx){obj.x+=dx;for(const s of solids){if(!rectHit(obj,s))co
 function collideY(obj,dy){obj.y+=dy;obj.onGround=false;for(const s of solids){if(!rectHit(obj,s))continue;if(dy>0){obj.y=s.y-obj.h;obj.vy=0;obj.onGround=true}else if(dy<0){obj.y=s.y+s.h;obj.vy=0;if(s.kind==='question'||s.kind==='brick')hitBlock(s)}}}
 function hitBlock(b){if(b.bump>0)return;b.bump=.18;if(b.kind==='question'&&!b.used){b.used=true;coins++;score+=200;updateHud();sound(900,.1,'sine');burst(b.x+8,b.y-5,'#ffdb59',8);announce('+200  ●')}else{sound(170,.08,'square');burst(b.x+8,b.y,'#be7045',5)}}
 function takeDamage(){if(player.invuln>0)return;lives--;updateHud();player.invuln=1.5;player.vy=-5;player.vx=-player.face*2.5;if(player.big){player.big=false;player.h=21;player.y+=8;announce('Ouch!')}else{sound(120,.25,'sawtooth',.05);if(lives<=0)setTimeout(()=>finish(false),400)}}
-function stomp(e){if(e.type==='koopa'&&!e.shell){e.shell=true;e.w=15;e.h=10;e.y+=8;e.vx=0;score+=200;announce('SHELL!')}else if(e.type==='koopa'&&e.shell){e.vx=player.x<e.x?-3.2:3.2;score+=100}else{e.alive=false;e.dead=.28;score+=100}player.vy=-5.4;updateHud();sound(240,.08,'square');burst(e.x+7,e.y,'#a85b32',5)}
-function update(dt){if(!running||paused||won)return;elapsed+=dt;timer-=dt;if(timer<=0){timer=0;updateHud();finish(false);return}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)ui.toast.classList.remove('show')}
- const target=(keys.right?1:0)-(keys.left?1:0);if(target){player.vx+=target*.42;player.face=target}else player.vx*=player.onGround?.76:.94;player.vx=Math.max(-2.2,Math.min(2.2,player.vx));collideX(player,player.vx);
- if(keys.jump&&player.onGround)jump();player.vy=Math.min(8,player.vy+GRAVITY);collideY(player,player.vy);player.anim+=Math.abs(player.vx)*.15;if(player.invuln>0)player.invuln-=dt;
+function stomp(e){if(e.type==='koopa'&&!e.shell){e.shell=true;e.w=15;e.h=10;e.y+=8;e.vx=0;score+=200;announce('SHELL!')}else if(e.type==='koopa'&&e.shell){e.vx=player.x<e.x?-2.2:2.2;score+=100}else{e.alive=false;e.dead=.28;score+=100}player.vy=-5.4;updateHud();sound(240,.08,'square');burst(e.x+7,e.y,'#a85b32',5)}
+function update(dt){if(!running||paused||won)return;const step=Math.min(1.2,dt*60);elapsed+=dt;timer-=dt;if(timer<=0){timer=0;updateHud();finish(false);return}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)ui.toast.classList.remove('show')}
+ const target=(keys.right?1:0)-(keys.left?1:0);if(target){player.vx+=target*.24*step;player.face=target}else player.vx*=Math.pow(player.onGround?.76:.94,step);player.vx=Math.max(-1.35,Math.min(1.35,player.vx));collideX(player,player.vx*step);
+ if(keys.jump&&player.onGround)jump();player.vy=Math.min(8,player.vy+GRAVITY*step);collideY(player,player.vy*step);player.anim+=Math.abs(player.vx)*.15*step;if(player.invuln>0)player.invuln-=dt;
  for(const c of coinItems){if(c.taken)continue;c.phase+=dt*6;const cy=c.y+Math.sin(c.phase)*2;if(Math.abs(player.x+player.w/2-c.x)<12&&Math.abs(player.y+player.h/2-cy)<16){c.taken=true;coins++;score+=200;updateHud();sound(1040,.08,'sine');burst(c.x,cy,'#ffe268',6)}}
- for(const e of entities){if(!e.alive){e.dead-=dt;continue}e.walk+=dt*8;if(e.shell&&Math.abs(e.vx)<.1)continue;if(e.x<0||e.x>WORLD-e.w)e.vx*=-1;const old=e.x;e.x+=e.vx;for(const s of solids){if(rectHit(e,s)){e.x=old;e.vx*=-1;break}}if(!e.shell){const under=solids.some(s=>e.x+e.w>s.x&&e.x<s.x+s.w&&Math.abs(e.y+e.h-s.y)<2);if(!under)e.vx*=-1}
+ for(const e of entities){if(!e.alive){e.dead-=dt;continue}e.walk+=dt*8;if(e.shell&&Math.abs(e.vx)<.1)continue;if(e.x<0||e.x>WORLD-e.w)e.vx*=-1;const old=e.x;e.x+=e.vx*step;for(const s of solids){if(rectHit(e,s)){e.x=old;e.vx*=-1;break}}if(!e.shell){const under=solids.some(s=>e.x+e.w>s.x&&e.x<s.x+s.w&&Math.abs(e.y+e.h-s.y)<2);if(!under)e.vx*=-1}
  if(rectHit(player,e)){if(player.vy>1&&player.y+player.h-e.y<11)stomp(e);else if(e.shell&&Math.abs(e.vx)<.1){e.vx=player.x<e.x?3:-3;score+=100;updateHud()}else takeDamage()}}
  entities=entities.filter(e=>e.alive||e.dead>0);
  for(const b of [...questionBlocks,...bricks])if(b.bump>0)b.bump=Math.max(0,b.bump-dt);
- for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=dt}particles=particles.filter(p=>p.life>0);
+ for(const p of particles){p.x+=p.vx*step;p.y+=p.vy*step;p.vy+=.12*step;p.life-=dt}particles=particles.filter(p=>p.life>0);
  if(player.y>H+40){player.x=camera+40;player.y=40;takeDamage()}
  camera=Math.max(0,Math.min(WORLD-W,player.x-155));
  if(player.x>WORLD-95){won=true;score+=Math.ceil(timer)*10;updateHud();setTimeout(()=>finish(true),500)}
