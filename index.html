@@ -13,7 +13,7 @@
 </head>
 <body>
 <main id="game-shell" aria-label="Super Mario platform game">
-<canvas id="game" width="240" height="135" aria-label="Mushroom Meadow game"></canvas>
+<canvas id="game" width="480" height="270" aria-label="Mushroom Meadow game"></canvas>
 <div id="hud"><div class="hud-group"><div class="hud-item"><span class="hud-label">Mario</span><span class="hud-value" id="score">000000</span></div><div class="hud-item"><span class="hud-label">Coins</span><span class="hud-value coin-icon">● <span id="coins">00</span></span></div></div><div class="hud-group"><div class="hud-item"><span class="hud-label">World</span><span class="hud-value">1-1</span></div><div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">400</span></div><div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value hearts" id="lives">♥♥♥</span></div></div></div>
 <button class="sound-btn" id="sound" aria-label="Toggle sound">♫</button><div class="toast" id="toast">1UP!</div>
 <div class="overlay" id="overlay"><section class="card"><div class="eyebrow">A tiny retro adventure</div><h1>SUPER<br>MARIO</h1><p>Run, jump, collect coins, and make it to the flag! Watch out for the little brown guys.</p><div class="actions"><button class="primary" id="start">LET'S-A GO!</button></div><p class="help">MOVE: ← → or A / D &nbsp; · &nbsp; JUMP: SPACE / ↑ / W<br>On mobile, use the on-screen buttons.</p></section></div>
@@ -24,8 +24,8 @@
 'use strict';
 (() => {
 const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
-// Render at half resolution and upscale with nearest-neighbor for a chunkier 8-bit look.
-ctx.scale(.5,.5);ctx.imageSmoothingEnabled=false;
+// Keep the pixel-art crisp without making individual pixels overly chunky.
+ctx.imageSmoothingEnabled=false;
 const W=480,H=270, WORLD=3040, FLOOR=230, GRAVITY=.42;
 const ui={overlay:document.getElementById('overlay'),end:document.getElementById('end-overlay'),score:document.getElementById('score'),coins:document.getElementById('coins'),time:document.getElementById('time'),lives:document.getElementById('lives'),toast:document.getElementById('toast')};
 let keys={left:false,right:false,jump:false},running=false,paused=false,won=false,muted=false,audio=null,last=0,elapsed=0,camera=0,score=0,coins=0,lives=3,timer=400,toastTimer=0,particles=[],entities=[],solids=[],coinItems=[],questionBlocks=[],bricks=[],pipes=[],clouds=[];
