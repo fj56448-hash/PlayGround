@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101c2c" />
+  <title>Grand Line — Lendas do Mar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Rye&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Grand Line início">
+        <span class="brand-mark">☠</span><span class="brand-copy"><strong>GRAND LINE</strong><small>lendas do mar</small></span>
+      </a>
+      <div class="top-actions">
+        <div class="resource"><span class="resource-icon berry">B</span><span id="berryCount">12.450</span><button class="plus" aria-label="Mais berries">+</button></div>
+        <div class="resource"><span class="resource-icon gem">✦</span><span id="gemCount">38</span><button class="plus" aria-label="Mais gemas">+</button></div>
+        <button id="soundToggle" class="icon-button" aria-label="Ativar ou desativar som" title="Som">♫</button>
+        <button id="helpButton" class="icon-button help-button" aria-label="Como jogar">?</button>
+      </div>
+    </header>
+
+    <section class="mission-strip">
+      <div class="mission-title"><span class="mission-emblem">⚓</span><div><span class="eyebrow">AVENTURA • EAST BLUE</span><h1>O navio fantasma</h1></div></div>
+      <div class="mission-progress"><div class="progress-copy"><span id="waveLabel">ETAPA 1 DE 3</span><span id="stageName">Águas turbulentas</span></div><div class="stage-track"><i class="active"></i><i></i><i></i></div></div>
+      <div class="stamina"><span class="stamina-icon">⚡</span><div><b>18 / 30</b><small>Energia</small></div><span class="stamina-timer">03:42</span></div>
+    </section>
+
+    <section class="battlefield" aria-label="Campo de batalha">
+      <div class="battle-vignette"></div>
+      <div class="battle-hud">
+        <div class="turn-pill"><span class="turn-dot"></span><span id="turnLabel">SUA VEZ</span><b id="turnNumber">01</b></div>
+        <div class="chain-display"><span>COMBO</span><strong id="chainCount">0</strong><small id="chainWord">TOQUES</small></div>
+      </div>
+      <div class="weather"><span>◌</span> VENTO FORTE <i></i> MAR AGITADO</div>
+
+      <div class="scene">
+        <div class="sun-glow"></div>
+        <div class="far-island"><i></i><i></i><i></i></div>
+        <div class="enemy-ship" aria-hidden="true"><div class="enemy-flag">☠</div><div class="mast"></div><div class="sail sail-back"></div><div class="sail sail-front"><span>☠</span></div><div class="ship-hull"></div><div class="hull-line"></div></div>
+        <div class="enemy-area">
+          <div class="enemy-nameplate"><span class="enemy-type">CHEFE</span><strong id="enemyName">Capitão Morgan</strong><span class="enemy-level">NV. 12</span></div>
+          <div class="enemy-hp-wrap"><div class="enemy-hp"><i id="enemyHpFill"></i></div><span id="enemyHpText">2.400 / 2.400</span></div>
+          <div class="enemy-status" id="enemyStatus"><span>✦</span> Pronto para atacar <b id="enemyCountdown">2</b></div>
+        </div>
+        <div class="sea-line sea-one"></div><div class="sea-line sea-two"></div>
+        <div class="wave wave-one"></div><div class="wave wave-two"></div>
+        <div class="foreground-ship"><div class="player-sail"><span>☠</span></div><div class="player-mast"></div><div class="player-hull"></div><div class="ship-glint"></div></div>
+        <div class="battle-toast" id="battleToast" aria-live="polite"></div>
+      </div>
+
+      <div class="battle-bottom">
+        <div class="crew-summary"><span class="crew-dot"></span><b>TRIPULAÇÃO DO CHAPÉU DE PALHA</b><span id="crewHpLabel">PV 8.200 / 8.200</span></div>
+        <div class="crew-hp"><i id="crewHpFill"></i></div>
+        <div class="battle-hint" id="battleHint"><span class="hint-spark">✦</span> Toque nos personagens no ritmo para atacar!</div>
+      </div>
+      <div class="battle-controls"><button id="autoButton" class="auto-button"><span>▶</span> AUTO <i></i></button><button id="speedButton" class="speed-button">1×</button></div>
+    </section>
+
+    <section class="crew-section">
+      <div class="crew-heading"><div><span class="eyebrow">SUA TRIPULAÇÃO</span><h2>Escolha sua sequência de ataque <span id="crewCount">6/6</span></h2></div><div class="crew-instructions"><kbd>TOQUE</kbd><span>no tempo certo para causar dano extra</span></div></div>
+      <div class="crew-cards" id="crewCards"></div>
+      <div class="crew-footer"><div class="type-legend"><span class="legend-dot red"></span>FORÇA <span class="legend-dot green"></span>AGILIDADE <span class="legend-dot blue"></span>TÉCNICA <span class="legend-dot yellow"></span>RAPIDEZ</div><button id="resetTurn" class="reset-button">↻ <span>RECOMEÇAR TURNO</span></button></div>
+    </section>
+    <footer><span>GRAND LINE <i>•</i> UMA AVENTURA DE CARTAS</span><span>FEITO PARA NAVEGANTES <b>♥</b></span></footer>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+      <div class="modal-icon" id="modalIcon">✦</div><span class="eyebrow" id="modalKicker">GRAND LINE</span><h2 id="modalTitle">Como jogar</h2><p id="modalText">Toque nos personagens no ritmo do marcador para criar uma corrente de ataques. Quanto melhor o tempo, maior o dano!</p>
+      <div class="modal-actions"><button class="primary-button" id="modalAction">ENTENDI, CAPITÃO</button><button class="secondary-button" id="restartGame" hidden>JOGAR DE NOVO</button></div>
+    </section>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
